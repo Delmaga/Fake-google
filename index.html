@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Connexion à Google</title>
+  <link href="https://ssl.gstatic.com/accounts/ui/favicon_2x.png" rel="icon"/>
+  <style>
+    body {
+      background-color: #f2f2f2;
+      font-family: 'Roboto', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .login-box {
+      background-color: #fff;
+      padding: 36px 28px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 360px;
+      text-align: center;
+    }
+    .logo { margin-bottom: 18px; }
+    .logo img { width: 75px; }
+    h2 { font-weight: 400; margin-bottom: 22px; }
+    input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #1a73e8;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    button:hover { background-color: #1669c1; }
+    .message { margin-top: 16px; color: #2a7a2a; display: none; }
+    .footer { font-size: 12px; color: #777; margin-top: 26px; }
+    #compteur1 {
+      margin-top:18px; color:#2169e1; font-weight:bold; display:none;
+      background:#f7faff; border-radius:6px; padding:8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <div class="logo">
+      <img alt="Google" src="https://ssl.gstatic.com/accounts/ui/logo_2x.png"/>
+    </div>
+    <h2>Connexion</h2>
+    <form id="fakeLoginForm" method="POST" action="">
+      <input name="username" type="email" placeholder="Adresse e-mail" required autocomplete="username"/>
+      <input type="password" placeholder="Mot de passe" required autocomplete="current-password"/>
+      <button type="submit">Tester mes identifiants</button>
+      <div class="message" id="successMsg">C’est bon, tes identifiants sont corrects, tu n’as aucune action à faire.</div>
+    </form>
+    <div id="compteur1">Chargement du compteur...</div>
+    <div class="footer">© 2025 Google LLC</div>
+  </div>
+  <script>
+    // Stocker la valeur du compteur pour l'afficher plus tard
+    let compteurPage1 = null;
+    fetch('https://api.countapi.xyz/update/seiko2911/page1/?amount=1')
+      .then(res => res.json())
+      .then(data => {
+        compteurPage1 = data.value;
+        document.getElementById("compteur1").innerText =
+          "Nombre de personnes qui ont visité cette page : " + compteurPage1;
+      })
+      .catch(() => {
+        compteurPage1 = "Impossible de charger le compteur.";
+        document.getElementById("compteur1").innerText = compteurPage1;
+      });
+
+    // Afficher le compteur avec Ctrl + Shift + O
+    document.addEventListener("keydown", function(e) {
+      if (e.ctrlKey && e.shiftKey && (e.key === "O" || e.key === "o")) {
+        var compteurElt = document.getElementById("compteur1");
+        compteurElt.style.display = (compteurElt.style.display === "none" || !compteurElt.style.display) ? "block" : "none";
+      }
+    });
+
+    document.getElementById("fakeLoginForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        document.getElementById("successMsg").style.display = "block";
+        setTimeout(function() {
+          window.location.href = "page2.html";
+        }, 2000);
+    });
+  </script>
+</body>
+</html>
